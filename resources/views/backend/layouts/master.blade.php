@@ -193,10 +193,10 @@
                         <i class="icon-people menu-icon"></i><span class="nav-text">Patients</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="#">Add New Patient</a></li>
-                        <li><a href="#">Add New Patient History</a></li>
-                        <li><a href="#">Patient List</a></li>
-                        <li><a href="#">Patient History</a></li>
+                        <li><a href="{{route("patient.create")}}">Add New Patient</a></li>
+                        <li><a href="{{route("patient-record.create")}}">Add New Patient History</a></li>
+                        <li><a href="{{route('patient.index')}}">Patient List</a></li>
+                        <li><a href="{{route('patient-record.index')}}">Patient History</a></li>
                     </ul>
                 </li>
 

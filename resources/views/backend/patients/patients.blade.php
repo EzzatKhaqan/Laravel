@@ -1,13 +1,13 @@
 @extends('backend.layouts.master')
 @section('content')
 
-    @if(!isset($list))
-        <h1>Add New Staff</h1>
+    @if(empty($patientList))
+        <h1>Add New Patients</h1>
         <div class="row page-titles mx-0">
             <div class="col p-md-0">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
-                    <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('dashboard')}}">Dashboard</a></li>
+                    <li class="breadcrumb-item active"><a href="#">Home</a></li>
                 </ol>
             </div>
         </div>
@@ -17,13 +17,11 @@
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-body">
+                            @if(Session()->has("success"))
+                                <span class="alert alert-success">{{Session()->get('success')}}</span>
+                            @endif
                             <div class="form-validation">
-                                @if(Session()->has('success'))
-                                    <span class="alert alert-success btn-block">
-                                     {{Session()->get('success')}}
-                                    </span>
-                                @endif
-                                <form class="form-valid" action="{{route('staff.store')}}" method="POST"
+                                <form class="form-valid" action="{{route('patient.store')}}" method="POST"
                                       enctype="multipart/form-data">
                                     @csrf
                                     <div class="form-group row">
@@ -50,36 +48,7 @@
                                             @enderror
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <label class="col-lg-4 col-form-label" for="val-position">Position <span
-                                                class="text-danger">*</span>
-                                        </label>
-                                        <div class="col-lg-6">
-                                            <input type="text" class="form-control" id="val-position" name="position"
-                                                   placeholder="position" value="{{old('position')}}">
 
-                                            @error('position')
-                                            <span class="danger alert-danger">{{$message}} </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-lg-4 col-form-label" for="val-position">Staff Type<span
-                                                class="text-danger">*</span>
-                                        </label>
-                                        <div class="col-lg-6">
-                                            <select class="select-box form-control" name="select">
-                                                <option value="doctor">Doctor</option>
-                                                <option value="nurse">Nurse</option>
-                                                <option value="guard">Guard</option>
-                                                <option value="other">IT</option>
-                                                <option value="other">Other</option>
-                                            </select>
-                                            @error('position')
-                                            <span class="danger alert-danger">{{$message}} </span>
-                                            @enderror
-                                        </div>
-                                    </div>
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-form-label">Gender<span class="text-danger">*</span>
                                         </label>
@@ -88,18 +57,6 @@
                                             <input type="radio" class="radio" id="val-female" name="gender"
                                                    value="female">Female
                                             @error('gender')<br>
-                                            <span class="danger alert-danger">{{$message}} </span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
-                                        <label class="col-lg-4 col-form-label" for="val-salary">Net Salary <span
-                                                class="text-danger">*</span>
-                                        </label>
-                                        <div class="col-lg-6">
-                                            <input type="text" class="form-control" id="val-salary" name="salary"
-                                                   placeholder="0" value="{{old('salary')}}">
-                                            @error('salary')
                                             <span class="danger alert-danger">{{$message}} </span>
                                             @enderror
                                         </div>
@@ -140,17 +97,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label class="col-lg-4 col-form-label" id="image">Image<span
-                                                class="text-danger">*</span>
-                                        </label>
-                                        <div class="col-lg-6">
-                                            <input type="file" class="form-control" id="image" name="image">
-                                            @error('image')
-                                            <p class="danger alert-danger">{{$message}}</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="form-group row">
                                         <div class="col-lg-8 ml-auto">
                                             <button type="submit" class="btn btn-primary">Submit</button>
                                         </div>
@@ -163,12 +109,13 @@
             </div>
         </div>
     @else
-        <h1>Staff List</h1>
+
+        <h1>Patient List</h1>
 
         <div class="row page-titles mx-0 test" id="test">
             <div class="col p-md-0">
                 <ol class="breadcrumb">
-                    <a class="btn btn-danger icon-trash text-white" href="{{route('staff.trash')}}"> Trash</a>
+                    <a class="btn btn-danger icon-trash text-white" href="{{route('patient.trash')}}"> Trash</a>
                 </ol>
             </div>
         </div>
@@ -177,9 +124,9 @@
                 <div class="card">
                     <div class="card-body">
                         @if(Session()->has('updated'))
-                                <span class="btn-block alert alert-success" id="mess">{{Session()->get('updated')}}</span>
+                            <span class="btn-block alert alert-success" id="mess">{{Session()->get('updated')}}</span>
                         @endif
-                        <h4 class="card-title">Employees</h4>
+                        <h4 class="card-title">Patients</h4>
                         <div class="table-responsive">
                             <div class="dataTables_wrapper container-fluid dt-bootstrap">
                                 <div class="row">
@@ -189,34 +136,28 @@
                                             <tr>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
-                                                <th>Photo</th>
-                                                <th>Position</th>
-                                                <th>Staff Type</th>
                                                 <th>Gender</th>
                                                 <th>Address</th>
                                                 <th>Phone Number</th>
                                                 <th>Date Of Birth</th>
-                                                <th>Salary</th>
                                                 <th>Edit</th>
                                                 <th>Delete</th>
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($staff as $st)
+                                            @foreach($patients as $pt)
                                                 <tr>
-                                                    <td>{{$st->firstname}}</td>
-                                                    <td>{{$st->lastname}}</td>
-                                                    <td><img src="{{asset('images/staff/'.$st->photo)}}" width="50" height="50" alt="Image"/></td>
-                                                    <td>{{$st->position}}</td>
-                                                    <td>{{$st->staff_type}}</td>
-                                                    <td>{{$st->gender}}</td>
-                                                    <td>{{$st->address}}</td>
-                                                    <td>{{$st->phone}}</td>
-                                                    <td>{{$st->DOB}}</td>
-                                                    <td>{{$st->net_salary}}</td>
-                                                    <td><a href="{{route('staff.edit',$st->staff_id)}}" class="btn btn-success icon-pencil"></a></td>
+                                                    <td>{{$pt->firstname}}</td>
+                                                    <td>{{$pt->lastname}}</td>
+                                                    <td>{{$pt->gender}}</td>
+                                                    <td>{{$pt->address}}</td>
+                                                    <td>{{$pt->phone}}</td>
+                                                    <td>{{$pt->DOB}}</td>
+                                                    <td><a href="{{route('patient.edit',$pt->patient_id)}}"
+                                                           class="btn btn-success icon-pencil"></a></td>
                                                     <td>
-                                                        <form action="{{route('staff.destroy',$st->staff_id)}}" method="POST">
+                                                        <form action="{{route('patient.destroy',$pt->patient_id)}}"
+                                                              method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button class="btn btn-danger icon-trash"></button>
@@ -228,21 +169,17 @@
                                             <tr>
                                                 <th>First Name</th>
                                                 <th>Last Name</th>
-                                                <th>Photo</th>
-                                                <th>Position</th>
-                                                <th>Staff Type</th>
                                                 <th>Gender</th>
                                                 <th>Address</th>
                                                 <th>Phone Number</th>
                                                 <th>Date Of Birth</th>
-                                                <th>Salary</th>
                                                 <th>Edit</th>
                                                 <th>Delete</th>
                                             </tr>
                                             </tfoot>
                                         </table>
                                         <div>
-                                            {{$staff->links()}}
+                                            {{$patients->links()}}
                                         </div>
                                     </div>
                                 </div>
@@ -251,8 +188,11 @@
                     </div>
                 </div>
             </div>
+
             @endif
+
             @endsection
-@section('title')
-        Staff List
-@endsection
+
+            @section('title')
+                Patients
+        @endsection

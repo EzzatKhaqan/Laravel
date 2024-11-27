@@ -11,11 +11,11 @@ class StaffController extends Controller {
 
         $staff = \App\Models\Staff::withoutTrashed()->paginate(10);
         $list = "stafflist";
-        return view('backend.staff', compact('list'))->with('staff', $staff);
+        return view('backend.staff.staff', compact('list'))->with('staff', $staff);
     }
 
     public function create() {
-        return view('backend.staff');
+        return view('backend.staff.staff');
     }
 
     public function store(Request $request) {
@@ -35,40 +35,60 @@ class StaffController extends Controller {
     }
 
     public function show(string $id) {
-//        dd($id);
+        //        dd($id);
     }
 
     public function edit(string $id) {
         $staff = \App\Models\Staff::where("staff_id", '=', $id)->first();
-        return View('backend.staffEdit')->with('staff', $staff);
+        return View('backend.staff.staffEdit')->with('staff', $staff);
     }
 
     public function update(Request $request, string $id) {
         $staff = \App\Models\Staff::where("staff_id", '=', $id)->first();
-        $file = $request->file('image');
         $image = '';
         if ($request->hasFile('image')) {
-            $filepath = public_path('images/staff/' . $staff->photo);
-            if (file_exists($filepath)) {
-                try {
-                    unlink($filepath);
-                } catch (\Exception $e) {
+            $file = $request->file('image');
+
+            if (!empty($staff->photo)) {
+                $filepath = public_path('images/staff/' . $staff->photo);
+                if (file_exists($filepath)) {
+                    try {
+                        unlink($filepath);
+                    } catch (\Exception $e) {
+                    }
                 }
-                $image = hash('sha256', time()) . $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension();
-                $file->move('images/staff', $image);
+
+            }
+            $image = hash('sha256', time()) . $file->getClientOriginalName() . '.' . $file->getClientOriginalExtension();
+            $file->move('images/staff', $image);
+
+        } else {
+            if(!empty($staff->photo)) {
+                $image = $staff->photo;
+            }else{
+                $image = "";
             }
         }
 
-        $staff->where('staff_id', "=", $id)->update(['firstname' => $request->firstname, 'lastname' => $request->lastname, 'staff_type' => $request['select'], 'position' => $request->position, 'gender' => $request->gender, 'photo' => $image, 'address' => $request->address, 'phone' => $request->phone, 'DOB' => $request->dob, 'net_salary' => $request->salary,]);
+        $staff->where('staff_id', "=", $id)->update([
+                'firstname' => $request->firstname,
+                'lastname' => $request->lastname,
+                'staff_type' => $request['select'],
+                'position' => $request->position,
+                'gender' => $request->gender,
+                'photo' => $image,
+                'address' => $request->address,
+                'phone' => $request->phone,
+                'DOB' => $request->dob,
+                'net_salary' => $request->salary
+            ]);
 
-        $list = "stafflist";
         Session()->flash('updated', "StaffController updated successfully");
-        $staff = \App\Models\Staff::all();
         return redirect()->route('staff.index');
     }
 
     public function destroy(string $id) {
-        \App\Models\Staff::where('staff_id','=',$id)->delete();
+        \App\Models\Staff::where('staff_id', '=', $id)->delete();
 
         return redirect()->route('staff.index');
     }
@@ -76,18 +96,18 @@ class StaffController extends Controller {
     public function trash() {
 
         $staff = \App\Models\Staff::onlyTrashed()->paginate(10);
-        return View("backend.staffTrash")->with('staff',$staff);
+        return View("backend..staff.staffTrash")->with('staff', $staff);
     }
 
-    public function restore(string $id){
+    public function restore(string $id) {
 
-        \App\Models\Staff::onlyTrashed()->where("staff_id",'=',$id)->restore();
+        \App\Models\Staff::onlyTrashed()->where("staff_id", '=', $id)->restore();
 
         return redirect()->route('staff.index');
     }
 
     public function delete(string $id) {
-        \App\Models\Staff::onlyTrashed()->where("staff_id",'=',$id)->forceDelete();
+        \App\Models\Staff::onlyTrashed()->where("staff_id", '=', $id)->forceDelete();
         return redirect()->route('staff.trash');
     }
 

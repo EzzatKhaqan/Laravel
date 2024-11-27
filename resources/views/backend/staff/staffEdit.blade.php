@@ -57,11 +57,11 @@
                                     </label>
                                     <div class="col-lg-6">
                                         <select class="select-box form-control" name="select">
-                                            <option value="doctor" @if($staff->staff_type=='doctor') selected @endif>Doctor</option>
-                                            <option value="nurse" @if($staff->staff_type=='Nurse') selected @endif>Nurse</option>
-                                            <option value="guard" @if($staff->staff_type=='Guard') selected @endif>Guard</option>
-                                            <option value="other" @if($staff->staff_type=='IT') selected @endif>IT</option>
-                                            <option value="other" @if($staff->staff_type=='Other') selected @endif>Other</option>
+                                            <option value="Doctor" @if($staff->staff_type=='doctor') selected @endif>Doctor</option>
+                                            <option value="Nurse"  @if($staff->staff_type=='Nurse') selected @endif>Nurse</option>
+                                            <option value="Guard"  @if($staff->staff_type=='Guard') selected @endif>Guard</option>
+                                            <option value="IT"     @if($staff->staff_type=='IT') selected @endif>IT</option>
+                                            <option value="Other"  @if($staff->staff_type=='Other') selected @endif>Other</option>
                                         </select>
                                         @error('position')
                                         <span class="danger alert-danger">{{$message}} </span>
@@ -157,4 +157,7 @@
     </div>
 
 
+@endsection
+@section('title')
+    Edit
 @endsection

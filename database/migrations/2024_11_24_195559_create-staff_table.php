@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id("staff_id");
             $table->string('firstname',64)->nullable(false);
             $table->string('lastname',64)->nullable(false);
-            $table->enum('staff_type',["Doctor","Nurse","Guard","Other"])->nullable(false)->default('Other');
+            $table->enum('staff_type',["Doctor","Nurse","Guard","IT","Other"])->nullable(false)->default('Other');
             $table->string('position',64)->nullable();
             $table->enum('gender',["male","female"])->nullable(false);
             $table->string('photo',128)->nullable();
