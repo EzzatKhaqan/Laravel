@@ -344,6 +344,7 @@
 <script src="{{asset('dist/js/settings.js')}}"></script>
 <script src="{{asset('dist/js/gleek.js')}}"></script>
 <script src="{{asset('dist/js/styleSwitcher.js')}}"></script>
+<script src="{{asset('dist/js/jquery.min.js')}}"></script>
 
 <!-- Chartjs -->
 <script src="{{asset('dist/plugins/chart.js/Chart.bundle.min.js')}}"></script>

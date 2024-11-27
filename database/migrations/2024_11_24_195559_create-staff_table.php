@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('phone',16)->unique()->nullable();
             $table->date('DOB')->nullable();
             $table->string('net_salary',128)->nullable(false);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

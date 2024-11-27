@@ -24,10 +24,11 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
         return view("backend.app-calender");
     })->name("app_calendar");
 
-    //Staff
-    Route::resource('/staff',\App\Http\Controllers\backend\Staff::class)->parameters(['staff'=>'id']);
-
+    //StaffController
+    Route::resource('/staff',\App\Http\Controllers\backend\StaffController::class)->parameters(['staff'=>'id']);
+    Route::get('/staff/trash/list',[\App\Http\Controllers\backend\StaffController::class, 'trash'])->name('staff.trash');
+    Route::get('/staff/trash/restore/{id}',[\App\Http\Controllers\backend\StaffController::class, 'restore'])->name('staff.restore');
+    Route::get('/staff/trash/delete/{id}',[\App\Http\Controllers\backend\StaffController::class, 'delete'])->name('staff.delete');
 
 });
-
 

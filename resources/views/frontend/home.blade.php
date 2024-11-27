@@ -13,6 +13,13 @@
 
 <h1>Wellcome Home</h1>
 
+<form action="{{route('staff.store')}}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="image">
+    <input type="submit">
+
+</form>
+
 
 </body>
 </html>
