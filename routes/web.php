@@ -80,8 +80,11 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
 
     //PatientMedicine
     Route::resource("/patient-medicine", PatientMedicineController::class);
+    Route::get("/patient-medicine/trash/list", [PatientMedicineController::class,'trash'])->name('patient-medicine.trash');
+    Route::get("/patient-medicine/trash/restore/{id}",[PatientMedicineController::class,'restore'])->name("patient-medicine.restore");
+    Route::delete("/patient-medicine/trash/delete/{id}", [PatientMedicineController::class,'delete'])->name("patient-medicine.delete");
 
-
+    //
 
 });
 
