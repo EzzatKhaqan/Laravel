@@ -9,9 +9,7 @@ class staff extends Model
 {
     use softDeletes;
     protected $table = 'staff';
-
     protected $guarded = ['staff_id'];
-
-
+    protected $primaryKey = "staff_id";
 
 }

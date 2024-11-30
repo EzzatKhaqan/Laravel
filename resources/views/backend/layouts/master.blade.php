@@ -229,10 +229,10 @@
                         <i class="icon-plus menu-icon"></i><span class="nav-text">Laboratory</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="#">Add New Test</a></li>
-                        <li><a href="#">Add New Patient Test</a></li>
-                        <li><a href="#">Tests</a></li>
-                        <li><a href="#">Patient Tests</a></li>
+                        <li><a href="{{route("test.create")}}">Add New Test</a></li>
+                        <li><a href="{{route('patient-test.create')}}">Add New Patient Test</a></li>
+                        <li><a href="{{route('test.index')}}">Tests</a></li>
+                        <li><a href="{{route("patient-test.index")}}">Patient Tests</a></li>
                     </ul>
                 </li>
 

@@ -2,10 +2,12 @@
 
 use App\Http\Controllers\backend\FreeTimeController;
 use App\Http\Controllers\backend\HomeController;
+use App\Http\Controllers\backend\TestController;
 use App\Http\Controllers\backend\MedicineController;
 use App\Http\Controllers\backend\OverTimeController;
 use App\Http\Controllers\backend\PatientController;
 use App\Http\Controllers\backend\PatientRecordController;
+use App\Http\Controllers\backend\PatientTestController;
 use App\Http\Controllers\backend\ScheduleController;
 use App\Http\Controllers\backend\StaffController;
 use App\Http\Controllers\backend\UserController;
@@ -25,7 +27,6 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
 
 
     Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
-
     Route::get('calendar', function () {
         return view("backend.app-calender");
     })->name("app_calendar");
@@ -54,7 +55,6 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
         return View("backend.user.profile");
     })->name("profile");
 
-
     //ScheduleRoutes
     Route::resource("/schedule",ScheduleController::class);
     Route::get("/schedule/trash/list",[ScheduleController::class,"trash"])->name("schedule.trash");
@@ -71,7 +71,6 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
     Route::get("/staff/schedule/freetime/trash/restore/{id}", [FreeTimeController::class,'restore'])->name("freetime.restore");
     Route::delete("/staff/schedule/freetime/trash/delete/{id}", [FreeTimeController::class,'delete'])->name("freetime.delete");
 
-
     //MedicineRoutes
     Route::resource("/medicine",MedicineController::class);
     Route::get("/medicine/trash/list",[MedicineController::class,'trash'])->name("medicine.trash");
@@ -84,7 +83,29 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
     Route::get("/patient-medicine/trash/restore/{id}",[PatientMedicineController::class,'restore'])->name("patient-medicine.restore");
     Route::delete("/patient-medicine/trash/delete/{id}", [PatientMedicineController::class,'delete'])->name("patient-medicine.delete");
 
-    //
+    //LaboratoryRoutes
+    Route::resource("/laboratory/test",TestController::class);
+    Route::get("/laboratory/test/trash/list",[TestController::class,"trash"])->name("test.trash");
+    Route::get("/laboratory/test/trash/restore/{id}",[TestController::class,"restore"])->name("test.restore");
+    Route::delete("/laboratory/test/trash/delete/{id}",[TestController::class,"delete"])->name("test.delete");
+
+    //PatientTestRoutes
+    Route::resource("/laboratory/patient-test", PatientTestController::class);
+    Route::get("/laboratory/patient-test/trash/list", [PatientTestController::class,'trash'])->name("patient-test.trash");
+    Route::get("/laboratory/patient-test/trash/restore/{id}", [PatientTestController::class,'restore'])->name("patient-test.restore");
+    Route::delete("/laboratory/patient-test/trash/delete/{id}", [PatientTestController::class,'delete'])->name("patient-test.delete");
+
+    //RoomRoutes
+
+    //TreatmentRoutes
+
+    //FinanceRoutes
+
+    //AppointmentRoutes
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+    //UserRoutes
 
 });
 
