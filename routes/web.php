@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\backend\AdmitController;
 use App\Http\Controllers\backend\FreeTimeController;
 use App\Http\Controllers\backend\HomeController;
+use App\Http\Controllers\backend\RoomController;
 use App\Http\Controllers\backend\TestController;
 use App\Http\Controllers\backend\MedicineController;
 use App\Http\Controllers\backend\OverTimeController;
@@ -96,6 +98,16 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
     Route::delete("/laboratory/patient-test/trash/delete/{id}", [PatientTestController::class,'delete'])->name("patient-test.delete");
 
     //RoomRoutes
+    Route::resource("/room",RoomController::class);
+    Route::get("/room/trash/list",[RoomController::class,'trash'])->name("room.trash");
+    Route::get("/room/trash/restore/{id}",[RoomController::class,'restore'])->name("room.restore");
+    Route::delete("/room/trash/delete/{id}",[RoomController::class,'delete'])->name("room.delete");
+
+    //AdmitRoutes
+    Route::resource("/admit",AdmitController::class);
+    Route::get("/patient/admit/trash/list",[AdmitController::class,'trash'])->name("admit.trash");
+    Route::get("/patient/admit/trash/restore/{id}",[AdmitController::class,'restore'])->name("admit.restore");
+    Route::delete("/patient/admit/trash/delete/{id}",[AdmitController::class,'delete'])->name("admit.delete");
 
     //TreatmentRoutes
 

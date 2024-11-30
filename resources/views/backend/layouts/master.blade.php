@@ -241,13 +241,13 @@
                         <i class="icon-home menu-icon"></i><span class="nav-text">Room</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="#">Add New Room</a></li>
-                        <li><a href="#">Add New Patient Admit</a></li>
-                        <li><a href="#">Room List</a></li>
-                        <li><a href="#">Admit List</a></li>
+                        <li><a href="{{route("room.create")}}">Add New Room</a></li>
+                        <li><a href="{{route('admit.create')}}">Add New Patient Admit</a></li>
+                        <li><a href="{{route('room.index')}}">Room List</a></li>
+                        <li><a href="{{route('admit.index')}}">Admit List</a></li>
                     </ul>
                 </li>
-
+{{----------------------------------------------------------------------------------}}
                 <li>
                     <a class="has-arrow" href="#" aria-expanded="false">
                         <i class="icon-plus menu-icon"></i><span class="nav-text">Treatments</span>
