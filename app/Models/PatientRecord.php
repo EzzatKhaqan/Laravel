@@ -11,4 +11,5 @@ class PatientRecord extends Model
 
     protected $table = 'patient_records';
     protected $guarded = ["patient_record_id"];
+    protected $primaryKey = "patient_record_id";
 }

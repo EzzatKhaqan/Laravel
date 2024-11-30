@@ -22,16 +22,17 @@
                             <span class="alert alert-success btn-block">{{Session()->get('success')}}</span>
                         @endif
                         <div class="form-validation">
-                            <form class="form-valid" action="{{route('patient-record.store')}}" method="POST"
+                            <form class="form-valid" action="{{route('patient-record.update',$patient_record->patient_record_id)}}" method="POST"
                                   enctype="multipart/form-data">
                                 @csrf
+                                @method('PUT')
                                 <div class="form-group row">
                                     <label class="col-lg-4 col-form-label" for="val-firstname">Patient Name<span
                                             class="text-danger">*</span>
                                     </label>
                                     <div class="col-lg-6">
                                         <select class="form-control" name="patient_id">
-                                            <option value="" selected>{{$patientRecord->firstname}}</option>
+                                            <option value="" selected>{{$patient->patient_id}} - {{$patient->firstname}} {{$patient->lastname}}</option>
                                             @foreach($patients as $pt)
                                                 <option value="{{$pt->patient_id}}">{{$pt->patient_id}} - {{$pt->firstname}} {{$pt->lastname}}</option>
                                             @endforeach
@@ -47,8 +48,8 @@
                                     </label>
                                     <span class="col-lg-6">
                                             <select class="form-control" name="staff_id">
-                                                <option value="" selected>Select Staff</option>
-                                                @foreach($staff as $st)
+                                                <option value="{{$staff->staff_id}}" selected>{{$staff->staff_id}} - {{$staff->firstname}} - {{$staff->lastname}}</option>
+                                                @foreach($staffs as $st)
                                                     <option value="{{$st->staff_id}}">{{$st->staff_id}}
                                                         -{{$st->firstname}} {{$st->lastname}}</option>
                                                 @endforeach
@@ -64,7 +65,7 @@
                                     </label>
                                     <div class="col-lg-6">
                                         <input type="text" class="form-control" id="val-sickness" name="sickness"
-                                               placeholder="Sickness" value="{{old('sickness')}}">
+                                               placeholder="Sickness" value="{{$patient_record->sickness}}">
                                         @error('sickness')
                                         <span class="danger alert-danger">{{$message}} </span>
                                         @enderror
@@ -76,7 +77,7 @@
                                     </label>
                                     <div class="col-lg-6">
                                         <input type="text" class="form-control" id="val-result" name="result"
-                                               placeholder="Result" value="{{old('result')}}">
+                                               placeholder="Result" value="{{$patient_record->result}}">
                                         @error('result')
                                         <span class="danger alert-danger">{{$message}} </span>
                                         @enderror
@@ -97,5 +98,9 @@
     </div>
 
 
+
+@endsection
+@section('title')
+    Edit
 
 @endsection

@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
 
     <title>@yield("title")</title>
-    <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('dist/images/favicon.png')}}">
-    <!-- Pignose Calender -->
+
     <link href="{{asset('dist/plugins/pg-calendar/css/pignose.calendar.min.css')}}" rel="stylesheet">
     <!-- Chartist -->
     <link rel="stylesheet" href="{{asset('dist/plugins/chartist/css/chartist.min.css')}}">
@@ -34,7 +32,7 @@
         <div class="brand-logo">
             <a href="{{route('home')}}">
                 <b class="logo-abbr"><img src="{{asset('dist/images/logo.png')}}" alt="Logo"> </b>
-                <span class="logo-compact"><img src="{{asset('dist/images/logo-compact.png')}}" alt=""></span>
+                <span class="logo-compact"><img src="" alt=""></span>
                 <span class="brand-title">
                         <img src="{{asset('dist/images/logo.png')}}" alt="">
                     </span>
@@ -205,12 +203,12 @@
                         <i class="icon-clock menu-icon"></i><span class="nav-text">Schedule</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="#">Add New Timetable</a></li>
-                        <li><a href="#">Add New Absent</a></li>
-                        <li><a href="#">Add New Overtime</a></li>
-                        <li><a href="#">Time Table</a></li>
-                        <li><a href="#">Overtime</a></li>
-                        <li><a href="#">Absent</a></li>
+                        <li><a href="{{route('schedule.create')}}">Add New Timetable</a></li>
+                        <li><a href="{{route('freetime.create')}}">Add New Absent</a></li>
+                        <li><a href="{{route('overtime.create')}}">Add New Overtime</a></li>
+                        <li><a href="{{route('schedule.index')}}">Schedules</a></li>
+                        <li><a href="{{route('overtime.index')}}">Overtime</a></li>
+                        <li><a href="{{route('freetime.index')}}">Absent</a></li>
                     </ul>
                 </li>
 
@@ -219,10 +217,10 @@
                         <i class="icon-plus icon-menu"></i><span class="nav-text">Pharmacy</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="#">Add New Medicine</a></li>
-                        <li><a href="#">Add New Patient Medicine</a></li>
-                        <li><a href="#">Medicine List</a></li>
-                        <li><a href="#">Patient Medicine List</a></li>
+                        <li><a href="{{route('medicine.create')}}">Add New Medicine</a></li>
+                        <li><a href="{{route('patient-medicine.create')}}">Add New Patient Medicine</a></li>
+                        <li><a href="{{route('medicine.index')}}">Medicine List</a></li>
+                        <li><a href="{{route('patient-medicine.index')}}">Patient Medicine List</a></li>
                     </ul>
                 </li>
 
@@ -355,16 +353,13 @@
 <script src="{{asset('dist/plugins/topojson/topojson.min.js')}}"></script>
 <script src="{{asset('dist/plugins/datamaps/datamaps.world.min.js')}}"></script>
 <!-- Morrisjs -->
-<script src="{{asset('dist/plugins/raphael/raphael.min.js')}}"></script>
-<script src="{{asset('dist/plugins/morris/morris.min.js')}}"></script>
+{{--<script src="{{asset('dist/plugins/raphael/raphael.min.js')}}"></script>--}}
+{{--<script src="{{asset('dist/plugins/morris/morris.min.js')}}"></script>--}}
 <!-- Pignose Calender -->
-<script src="{{asset('dist/plugins/moment/moment.min.js')}}"></script>
-<script src="{{asset('dist/plugins/pg-calendar/js/pignose.calendar.min.js')}}"></script>
 
 <!-- ChartistJS -->
-<script src="{{asset('dist/plugins/chartist/js/chartist.min.js')}}"></script>
-<script src="{{asset('dist/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.jss')}}"></script>
-<script src="{{asset('dist/js/dashboard/dashboard-1.js')}}"></script>
+{{--<script src="{{asset('dist/plugins/chartist/js/chartist.min.js')}}"></script>--}}
+{{--<script src="{{asset('dist/js/dashboard/dashboard-1.js')}}"></script>--}}
 
 @yield('js')
 

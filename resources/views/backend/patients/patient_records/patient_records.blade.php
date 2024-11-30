@@ -96,12 +96,21 @@
         </div>
     @else
 
-        <h1>Patient History List</h1>
+        @if(Session()->has('trash'))
+            <h1>Trash</h1>
+        @else
+            <h1>Patient History List</h1>
+        @endif
 
         <div class="row page-titles mx-0 test" id="test">
             <div class="col p-md-0">
                 <ol class="breadcrumb">
-                    <a class="btn btn-danger icon-trash text-white" href="{{route('patient.trash')}}"> Trash</a>
+                    @if(Session('trash'))
+                        <a class="btn icon-home text-black" href="{{route('patient-record.index')}}"> Home</a>
+
+                    @else
+                        <a class="btn btn-danger icon-trash text-white" href="{{route('patient.record.trash')}}"> Trash</a>
+                    @endif
                 </ol>
             </div>
         </div>
@@ -109,10 +118,18 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-body">
-                        @if(Session()->has('updated'))
-                            <span class="btn-block alert alert-success" id="mess">{{Session()->get('updated')}}</span>
+                        @if(Session()->has("action"))
+                            <span class="btn-block alert alert-success" id="mess">{{Session()->get('action')}}</span>
                         @endif
-                        <h4 class="card-title">Patient History</h4>
+                        @if(Session()->has('success'))
+                            <span class="btn-block alert alert-success" id="mess">{{Session()->get('success')}}</span>
+                        @endif
+                            @if(Session()->has('trash'))
+                                <h4 class="card-title">Trash</h4>
+                            @else
+                                <h4 class="card-title">Patient History</h4>
+                            @endif
+
                         <div class="table-responsive">
                             <div class="dataTables_wrapper container-fluid dt-bootstrap">
                                 <div class="row">
@@ -120,52 +137,94 @@
                                         <table class="table table-striped table-bordered zero-configuration">
                                             <thead>
                                             <tr>
-                                                <th>Patient name</th>
-                                                <th>Staff Name</th>
-                                                <th>Result</th>
-                                                <th>Sickness</th>
-                                                <th>Time In</th>
-                                                <th>Time Out</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
+                                                @if(Session()->has('trash'))
+                                                    <th>Patient name</th>
+                                                    <th>Staff Name</th>
+                                                    <th>Result</th>
+                                                    <th>Sickness</th>
+                                                    <th>Time In</th>
+                                                    <th>Time Out</th>
+                                                    <th>Restore</th>
+                                                    <th>Delete</th>
+                                                @else
+                                                    <th>Patient name</th>
+                                                    <th>Staff Name</th>
+                                                    <th>Result</th>
+                                                    <th>Sickness</th>
+                                                    <th>Time In</th>
+                                                    <th>Time Out</th>
+                                                    <th>Edit</th>
+                                                    <th>Delete</th>
+                                                    <th>More</th>
+                                                @endif
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            @foreach($patientRecords as $res)
+                                            @foreach($result as $res)
                                                 <tr>
-                                                    <td>{{$res->patient_id}}</td>
-                                                    <td>{{$res->staff_id}}</td>
-                                                    <td>{{$res->result}}</td>
-                                                    <td>{{$res->sickness}}</td>
-                                                    <td>{{$res->time_in}}</td>
-                                                    <td>{{$res->time_out}}</td>
+                                                    <td>{{$res["patient_name"]}}</td>
+                                                    <td>{{$res["staff_name"]}}</td>
+                                                    <td>{{$res["result"]}}</td>
+                                                    <td>{{$res['sickness']}}</td>
+                                                    <td>{{$res['time_in']}}</td>
+                                                    <td>{{$res['time_out']}}</td>
 
-                                                    <td><a href="{{route('patient-record.edit',$res->patient_id)}}"
-                                                           class="btn btn-success icon-pencil"></a></td>
-                                                    <td>
-                                                        <form action="{{route('patient-record.destroy',$res->staff_id)}}"
-                                                              method="POST">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button class="btn btn-danger icon-trash"></button>
-                                                        </form>
-                                                    </td>
+                                                    @if(Session()->has('trash'))
+                                                        <td><a href="{{route('patient.record.restore',$res['patient_record_id'])}}"
+                                                               class="btn btn-success icon-reload"></a></td>
+                                                        <td>
+                                                            <form action="{{route('patient.record.delete',$res['patient_record_id'])}}"
+                                                                  method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button class="btn btn-danger icon-trash"></button>
+                                                            </form>
+                                                        </td>
+                                                    @else
+                                                        <td><a href="{{route('patient-record.edit',$res['patient_record_id'])}}"
+                                                               class="btn btn-success icon-pencil"></a></td>
+                                                        <td>
+                                                            <form action="{{route('patient-record.destroy',$res['patient_record_id'])}}"
+                                                                  method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button class="btn btn-danger icon-trash"></button>
+                                                            </form>
+                                                        </td>
+                                                        <td><a class="btn btn-info" href="{{route('patient-record.show',$res["patient_record_id"])}}">More</a></td>
+                                                    @endif
+
                                                 </tr>
                                             @endforeach
                                             <tfoot>
-                                            <tr>
-                                                <th>Patient name</th>
-                                                <th>Staff Name</th>
-                                                <th>Result</th>
-                                                <th>Sickness</th>
-                                                <th>Time In</th>
-                                                <th>Time Out</th>
-                                                <th>Edit</th>
-                                                <th>Delete</th>
-                                            </tr>
+                                            @if(Session()->has("trash"))
+                                                <tr>
+                                                    <th>Patient name</th>
+                                                    <th>Staff Name</th>
+                                                    <th>Result</th>
+                                                    <th>Sickness</th>
+                                                    <th>Time In</th>
+                                                    <th>Time Out</th>
+                                                    <th>Restore</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            @else
+                                                <tr>
+                                                    <th>Patient name</th>
+                                                    <th>Staff Name</th>
+                                                    <th>Result</th>
+                                                    <th>Sickness</th>
+                                                    <th>Time In</th>
+                                                    <th>Time Out</th>
+                                                    <th>Edit</th>
+                                                    <th>Delete</th>
+                                                </tr>
+                                            @endif
+
                                             </tfoot>
                                         </table>
 
+                                        <div>{{$patientRecords->links()}}</div>
                                     </div>
                                 </div>
                             </div>

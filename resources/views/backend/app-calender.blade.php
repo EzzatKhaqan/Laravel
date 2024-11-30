@@ -108,10 +108,12 @@
 @endsection
 
 @section('js')
+
     <script src="{{asset('dist/plugins/jqueryui/js/jquery-ui.min.js')}}"></script>
     <script src="{{asset('dist/plugins/moment/moment.min.js')}}"></script>
     <script src="{{asset('dist/plugins/fullcalendar/js/fullcalendar.min.js')}}"></script>
     <script src="{{asset('dist/js/plugins-init/fullcalendar-init.js')}}"></script>
+
 @endsection
 
 @section('title')

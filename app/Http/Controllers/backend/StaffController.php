@@ -35,7 +35,7 @@ class StaffController extends Controller {
     }
 
     public function show(string $id) {
-        //        dd($id);
+//                dd($id);
     }
 
     public function edit(string $id) {

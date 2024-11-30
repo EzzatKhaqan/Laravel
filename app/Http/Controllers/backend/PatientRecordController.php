@@ -16,33 +16,29 @@ class PatientRecordController extends Controller
      */
     public function index()
     {
-        $patientRecords = PatientRecord::all();
+        $patientRecords = PatientRecord::withoutTrashed()->paginate(10);
 
-//        dd($patientRecords);
-//        $result = [];
-//        foreach($patientRecords as $patientRecord){
-//            $temp = [];
-//            $p = Patient::where("patient_id",$patientRecord->patient_id)->first();
-//            $s = Staff::where("staff_id",$patientRecord->staff_id)->first();
-//            $sickness = array($patientRecord->sickness);
-//            $result =  [$patientRecord->result];
-//            $timeout = [$patientRecord->time_out];
-//            $time_in = [$patientRecord->time_in];
-//            $temp = ["patient_name"=>$p->firstname,
-//                     "staff_name"=>$s->firstname,
-//                     "result"=>$result,
-//                     "time_out"=>$timeout,
-//                     "time_in"=>$time_in,
-//                     "sickness"=>$sickness,
-//                     "patient_id"=>$patientRecord->patient_id,
-//                     "staff_id"=>$patientRecord->staff_id];
-//            array_push($result,$temp);
-//        }
-//        dd($result);
-        return View("backend.patients.patient_records.patient_records")->with("patientRecords", $patientRecords);
+        $result = [];
+        foreach($patientRecords as $patientRecord){
+            $p = Patient::where("patient_id",$patientRecord->patient_id)->first();
+            $s = Staff::where("staff_id",$patientRecord->staff_id)->first();
+
+            $temp = ["patient_name"=>$p->firstname,
+                     "staff_name"=>$s->firstname,
+                     "result"=>$patientRecord->result,
+                     "time_out"=>$patientRecord->time_out,
+                     "time_in"=>$patientRecord->time_in,
+                     "sickness"=>$patientRecord->sickness,
+                     "patient_id"=>$patientRecord->patient_id,
+                     "staff_id"=>$patientRecord->staff_id,
+                     "patient_record_id"=>$patientRecord->patient_record_id,];
+            array_push($result,$temp);
+        }
+        if(Session()->has('trash')){
+            Session()->forget('trash');
+        }
+        return View("backend.patients.patient_records.patient_records")->with("result", $result)->with("patientRecords",$patientRecords);
     }
-
-
 
     public function create()
     {
@@ -73,35 +69,82 @@ class PatientRecordController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(PatientRecord $patientRecord)
     {
-        //
+        $patient = Patient::where("patient_id","=",$patientRecord->patient_id)->first();
+        $staff = Staff::where("staff_id","=",$patientRecord->staff_id)->first();
+        return View("backend/patients/patient_records/History")->with("patientRecord",$patientRecord)->with("staff",$staff)->with("patient",$patient);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PatientRecord $patientRecord)
+    public function edit(PatientRecord $patient_record)
     {
-        return View("backend/patinets/patinet_records/patient_record_Edit")->with("patientRecord", $patientRecord);
+        $patient = Patient::where("patient_id","=",$patient_record->patient_id)->first();
+        $staff = Staff::where("staff_id","=",$patient_record->staff_id)->first();
+        $patients = Patient::all();
+        $staffs = Staff::all();
+        return View("backend/patients/patient_records/patient_record_Edit")->with("patient_record", $patient_record)->
+        with("patient", $patient)->with("staff",$staff)->with("patients", $patients)->with("staffs", $staffs);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, PatientRecord $patientRecord)
     {
-        //
+        $currentTime = Carbon::now()->format("H:i:s");
+
+        PatientRecord::where("patient_record_id","=",$patientRecord->patient_record_id)->first()->update([
+            "patient_id" => $request->patient_id,
+            "staff_id" => $request->staff_id,
+            "sickness"=> $request->sickness,
+            "result"=> $request->result,
+            "time_in"=>$patientRecord->time_in,
+            "time_out"=> $currentTime,
+        ]);
+        Session()->flash("success", "Record updated successfully");
+        return redirect()->route('patient-record.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(PatientRecord $patientRecord)
     {
-        //
+        $patientRecord->delete();
+        Session()->flash("success", "Record deleted successfully");
+        return redirect()->route('patient-record.index');
     }
+
+    public function trash(){
+
+        $patientRecords = PatientRecord::onlyTrashed()->paginate(10);
+        $result = [];
+        foreach($patientRecords as $patientRecord){
+            $p = Patient::where("patient_id",$patientRecord->patient_id)->first();
+            $s = Staff::where("staff_id",$patientRecord->staff_id)->first();
+
+            $temp = ["patient_name"=>$p->firstname,
+                "staff_name"=>$s->firstname,
+                "result"=>$patientRecord->result,
+                "time_out"=>$patientRecord->time_out,
+                "time_in"=>$patientRecord->time_in,
+                "sickness"=>$patientRecord->sickness,
+                "patient_id"=>$patientRecord->patient_id,
+                "staff_id"=>$patientRecord->staff_id,
+                "patient_record_id"=>$patientRecord->patient_record_id,];
+            array_push($result,$temp);
+        }
+        Session()->flash("trash","Trash");
+        return View("backend.patients.patient_records.patient_records")->with("result", $result)->with("patientRecords",$patientRecords);
+    }
+
+    public function restore(string $id){
+
+        PatientRecord::where("patient_record_id","=",$id)->restore();
+        Session()->flash("action", "Record restored successfully");
+        return redirect()->back();
+    }
+
+    public function delete(string $id){
+
+        PatientRecord::where("patient_record_id","=",$id)->forceDelete();
+        Session()->flash("action", "Record deleted successfully");
+        return redirect()->back();
+
+    }
+
 }
