@@ -3,6 +3,7 @@
 use App\Http\Controllers\backend\AdmitController;
 use App\Http\Controllers\backend\FreeTimeController;
 use App\Http\Controllers\backend\HomeController;
+use App\Http\Controllers\backend\PatientTreatmentController;
 use App\Http\Controllers\backend\RoomController;
 use App\Http\Controllers\backend\TestController;
 use App\Http\Controllers\backend\MedicineController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\backend\PatientRecordController;
 use App\Http\Controllers\backend\PatientTestController;
 use App\Http\Controllers\backend\ScheduleController;
 use App\Http\Controllers\backend\StaffController;
+use App\Http\Controllers\backend\TreatmentController;
 use App\Http\Controllers\backend\UserController;
 use App\Http\Controllers\backend\PatientMedicineController;
 use Illuminate\Support\Facades\Auth;
@@ -110,7 +112,16 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
     Route::delete("/patient/admit/trash/delete/{id}",[AdmitController::class,'delete'])->name("admit.delete");
 
     //TreatmentRoutes
+    Route::resource("/treatment",TreatmentController::class);
+    Route::get("/treatment/trash/list",[TreatmentController::class,'trash'])->name("treatment.trash");
+    Route::get("/treatment/trash/restore/{id}",[TreatmentController::class,'restore'])->name("treatment.restore");
+    Route::delete("/treatment/trash/delete/{id}",[TreatmentController::class,'delete'])->name("treatment.delete");
 
+    //PatientTreatment
+    Route::resource("/patient-treatment", PatientTreatmentController::class);
+    Route::get("/patient-treatment/trash/list", [PatientTreatmentController::class,'trash'])->name("patient-treatment.trash");
+    Route::get("/patient-treatment/trash/restore/{id}", [PatientTreatmentController::class,'restore'])->name("patient-treatment.restore");
+    Route::delete("/patient-treatment/trash/delete/{id}", [PatientTreatmentController::class,'delete'])->name("patient-treatment.delete");
     //FinanceRoutes
 
     //AppointmentRoutes

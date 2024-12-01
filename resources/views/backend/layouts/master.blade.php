@@ -247,18 +247,20 @@
                         <li><a href="{{route('admit.index')}}">Admit List</a></li>
                     </ul>
                 </li>
-{{----------------------------------------------------------------------------------}}
+
                 <li>
                     <a class="has-arrow" href="#" aria-expanded="false">
                         <i class="icon-plus menu-icon"></i><span class="nav-text">Treatments</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="#">Add New Treatment</a></li>
-                        <li><a href="#">Add New Patient Treatment</a></li>
-                        <li><a href="#">Treatment List</a></li>
-                        <li><a href="#">Patient Treatments</a></li>
+                        <li><a href="{{route('treatment.create')}}">Add New Treatment</a></li>
+                        <li><a href="{{route('patient-treatment.create')}}">Add New Patient Treatment</a></li>
+                        <li><a href="{{route('treatment.index')}}">Treatment List</a></li>
+                        <li><a href="{{route('patient-treatment.index')}}">Patient Treatments</a></li>
                     </ul>
                 </li>
+
+                {{----------------------------------------------------------------------------------}}
 
                 <li>
                     <a class="has-arrow" href="#" aria-expanded="false">
