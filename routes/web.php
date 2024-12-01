@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\backend\AdmitController;
+use App\Http\Controllers\backend\AppointmentController;
 use App\Http\Controllers\backend\FreeTimeController;
 use App\Http\Controllers\backend\HomeController;
 use App\Http\Controllers\backend\PatientTreatmentController;
@@ -122,9 +123,14 @@ Route::middleware('auth')->prefix("administrator")->group(function () {
     Route::get("/patient-treatment/trash/list", [PatientTreatmentController::class,'trash'])->name("patient-treatment.trash");
     Route::get("/patient-treatment/trash/restore/{id}", [PatientTreatmentController::class,'restore'])->name("patient-treatment.restore");
     Route::delete("/patient-treatment/trash/delete/{id}", [PatientTreatmentController::class,'delete'])->name("patient-treatment.delete");
-    //FinanceRoutes
 
     //AppointmentRoutes
+    Route::resource("/appointment",AppointmentController::class);
+    Route::get("/appointment/trash/list",[AppointmentController::class,"trash"])->name("appointment.trash");
+    Route::get("/appointment/trash/restore/{id}",[AppointmentController::class,"restore"])->name("appointment.restore");
+    Route::delete("/appointment/trash/delete/{id}",[AppointmentController::class,"delete"])->name("appointment.delete");
+
+    //FinanceRoutes
 
     //----------------------------------------------------------------------------------------------------------------//
 

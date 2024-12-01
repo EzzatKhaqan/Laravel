@@ -130,14 +130,16 @@
                             <div class="dropdown-content-body">
                                 <ul>
                                     <li>
-                                        <a href="{{route('profile')}}"><i class="icon-user"></i> <span>Profile</span></a>
+                                        <a href="{{route('profile')}}"><i class="icon-user"></i>
+                                            <span>Profile</span></a>
                                     </li>
                                     <hr class="my-2">
 
                                     <li>
                                         <form action="{{route('logout')}}" method="POST">
                                             @csrf
-                                            <button class="btn btn-block"><i class="icon-key"></i> <span>Logout</span></button>
+                                            <button class="btn btn-block"><i class="icon-key"></i> <span>Logout</span>
+                                            </button>
                                         </form>
                                     </li>
                                 </ul>
@@ -260,18 +262,6 @@
                     </ul>
                 </li>
 
-                {{----------------------------------------------------------------------------------}}
-
-                <li>
-                    <a class="has-arrow" href="#" aria-expanded="false">
-                        <i class="icon-user menu-icon"></i><span class="nav-text">Users</span>
-                    </a>
-                    <ul aria-expanded="false">
-                        <li><a href="#">Add New User</a></li>
-                        <li><a href="#">Users</a></li>
-                    </ul>
-                </li>
-
                 <li>
                     <a class="has-arrow" href="#" aria-expanded="false">
                         <i class="icon-ecommerce-graph-increase menu-icon"></i><span class="nav-text">Finance</span>
@@ -291,8 +281,22 @@
                         <i class="icon-plus menu-icon"></i><span class="nav-text">Appointments</span>
                     </a>
                     <ul aria-expanded="false">
-                        <li><a href="#">Add New Appointments</a></li>
-                        <li><a href="#">Appointments</a></li>
+                        <li><a href="{{route('appointment.create')}}">Add New Appointments</a></li>
+                        <li><a href="{{route('appointment.index')}}">Appointments</a></li>
+                    </ul>
+                </li>
+
+                {{----------------------------------------------------------------------------------}}
+
+                <li class="nav-label">Users</li>
+
+                <li>
+                    <a class="has-arrow" href="#" aria-expanded="false">
+                        <i class="icon-user menu-icon"></i><span class="nav-text">Users</span>
+                    </a>
+                    <ul aria-expanded="false">
+                        <li><a href="#">Add New User</a></li>
+                        <li><a href="#">Users</a></li>
                     </ul>
                 </li>
 
